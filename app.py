@@ -1,2 +1,2 @@
-def ContactBook :
+class ContactBook :
     pass
