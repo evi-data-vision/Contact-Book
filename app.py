@@ -1,2 +1,0 @@
-def ContactBook :
-  pass
