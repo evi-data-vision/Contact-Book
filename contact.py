@@ -7,71 +7,53 @@ class ContactBook :
         self.id = 1
 
     def add_contact(self , name , phone , email = None) :
+        if email is None : email = ''
+        for key , value in self.contact.items() :
+            if value['name'] == name and value['phone'] == phone :
+                return ['exist' , (f'contact {name} already exists!')]
+            
         id = self.id
         self.contact[id] = {'name' : name , 'phone' : phone , 'email' : email}
-        print(f'contact {name} added!')
         self.id += 1
-
+        return ['added' , (f'contact {name} added!')]
 
     def view_contacts(self) :
-        for key , value in self.contact.items() :
-            print(f'\nname : {self.contact[key]["name"]}')
-            print(f'phone : {self.contact[key]["phone"]}')
-            print(f'email : {self.contact[key]["email"]}')
-            print('_' * 50)
+        return self.contact
 
 
     def get_contact(self , name) :
         keys = []
+        finded_contact = defaultdict(dict)
 
         for key , value in self.contact.items() :
             if value['name'] == name :
                 keys.append(key)
-
-        for key in keys :
-            print(f'\nname : {self.contact[key]["name"]}')
-            print(f'phone : {self.contact[key]["phone"]}')
-            print(f'email : {self.contact[key]["email"]}')
-            print('_' * 50)
+                finded_contact[key] = value
         
-        if keys == [] : print('contact not found!')
+        return finded_contact
 
 
-    def delete_contact(self , name) :
-        keys = []
-
-        for key ,value in self.contact.items() :
-            if value['name'] == name :
-                keys.append(key)
+    def delete_contact(self , name , phone = None) :
+        keys = self.get_contact(name)
 
         if len(keys) > 1 :
-            self.get_contact(name)
-            print('\nplease enter the phone of contact that you want to delete')
-            phone = input('phone : ')
             for key in keys :
                 if self.contact[key]['phone'] == phone :
                     del self.contact[key]
-                    print(f'contact {name} deleted!')
-                    break
-            else : print('contact not found!')
-        
+                    return (f'contact {name} deleted!')
+                    
+            else : return ('contact not found!')
+
         elif len(keys) == 1 :
             del self.contact[keys[0]]
-            print(f'contact {name} deleted')
+            return (f'contact {name} deleted')
 
-        else : print('contact not found!')
-
+        else : return ('contact not found!')
     
-    def update_contact(self , name , new_phone , new_email = None , new_name = None) :
-        keys = []
+    def update_contact(self , name , phone = None ,  new_name = None, new_phone = None , new_email = None) :
+        keys = self.get_contact(name)
 
-        for key , value in self.contact.items() :
-            if value['name'] == name :
-                keys.append(key)
         if len(keys) > 1 :
-            self.get_contact(name)
-            print('\nplease enter the phone of contact that you want to update')
-            phone = input('phone : ')
             for key in keys :
                 if self.contact[key]['phone'] == phone :
                     if new_name != '' : 
@@ -80,16 +62,16 @@ class ContactBook :
                         self.contact[key]['phone'] = new_phone
                     if new_email != '' :
                         self.contact[key]['email'] = new_email
-                    print(f'contact {name} updated!')
+                    return (f'contact {name} updated!')
                     break
             else : 
-                print('contact not found!')
+                return ('contact not found!')
 
         elif len(keys) == 1 : 
             if new_name != '' : self.contact[key]['name'] = new_name
             if new_phone != '' : self.contact[key]['phone'] = new_phone
             if new_email != '' :self.contact[key]['email'] = new_email
-            print(f'contact {name} updated!')
+            return (f'contact {name} updated!')
         else :    
-            print('contact not found!')
+            return ('contact not found!')
 
