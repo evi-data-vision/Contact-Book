@@ -81,18 +81,18 @@ if st.session_state.current_page == 'edit' :
             else :
                 st.error(update_msg)
 
-    if st.session_state.current_page == 'find' :
-        search_name = st.text_input('' , placeholder = 'name of contact that you want search')
-        if find and search_name != '' :
-            contacts = st.session_state.contact_book.get_contact(search_name)
-            if len(contacts.items()) == 0 :
-                st.error(f'contact {search_name} not found!')
-            else :
-                for key , value in contacts.items() :
-                    st.info(f'''
-                            name : {contacts[key]["name"]} \n
-                            phone : {contacts[key]["phone"]} \n
-                            email : {contacts[key]["email"]}''')
+if st.session_state.current_page == 'find' :
+    search_name = st.text_input('' , placeholder = 'name of contact that you want search')
+    if find and search_name != '' :
+        contacts = st.session_state.contact_book.get_contact(search_name)
+        if len(contacts.items()) == 0 :
+            st.error(f'contact {search_name} not found!')
+        else :
+            for key , value in contacts.items() :
+                st.info(f'''
+                        name : {contacts[key]["name"]} \n
+                        phone : {contacts[key]["phone"]} \n
+                        email : {contacts[key]["email"]}''')
 
 if st.session_state.current_page == 'delete' :
     del_name = st.text_input('' , placeholder = 'name of contact that you want delete')
